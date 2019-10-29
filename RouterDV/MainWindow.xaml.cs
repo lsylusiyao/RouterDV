@@ -19,6 +19,8 @@ namespace RouterDV
     /// </summary>
     public partial class MainWindow : Window
     {
+        Input input; //Input子窗口
+
         public MainWindow()
         {
             InitializeComponent();
@@ -35,7 +37,7 @@ namespace RouterDV
 
         private void InputButton_Click(object sender, RoutedEventArgs e)
         {
-            Input input = new Input();
+            input = new Input();
             input.ShowDialog();
         }
 
@@ -43,6 +45,12 @@ namespace RouterDV
         {
             public int[][] RouterConnection { set; get; }
 
+            public static void ReadConfig() //将节点关系数组读取并变化为正方形距离关系数组，默认两节点的距离是5，设置为可调整的，然后不在输入中的节点对，直接给16
+            {
+
+            }
+
         }
+
     }
 }

@@ -11,7 +11,7 @@
             <FlowDocument/>
         </RichTextBox>
         <Button Content="提交" HorizontalAlignment="Left" Margin="251,339,0,0" VerticalAlignment="Top" Width="75"/>
-        <TextBox HorizontalAlignment="Left" Height="115" Margin="10,148,0,0" TextWrapping="Wrap" Text="请输入路由器的参数，例如：&#xA;router 3, 3003, 3004, 3006&#xA;router 4, 3004, 3003, 3006, 3005 &#xA;router 5, 3005, 3004, 3007 &#xA;router 6, 3006, 3003, 3004, 3007 &#xA;router 7, 3007, 3006, 3005 &#xA;" VerticalAlignment="Top" Width="192" IsReadOnly="True"/>
+        <TextBox HorizontalAlignment="Left" Height="115" Margin="10,148,0,0" TextWrapping="Wrap" Text="请输入路由器的参数，例如：&#xA;router 3, 3003, 3004, 3006&#xD;&#xA;router 4, 3004, 3003, 3006, 3005&#xA;router 5, 3005, 3004, 3007&#xA;router 6, 3006, 3003, 3004, 3007&#xA;router 7, 3007, 3006, 3005&#xA;" VerticalAlignment="Top" Width="192" IsReadOnly="True"/>
         <Label Content="路由器参数输入框" HorizontalAlignment="Left" Margin="40,19,0,0" VerticalAlignment="Top" Height="35" Width="143" FontSize="16"/>
 
     </Grid>
