@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RouterDV"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="DV路由模拟程序" Height="650" Width="1200">
     <Grid>
-        
+        <Button x:Name="inputButton" Content="输入参数" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Height="36" FontSize="16" Click="InputButton_Click"/>
+
     </Grid>
 </Window>

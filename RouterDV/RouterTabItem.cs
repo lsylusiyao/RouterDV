@@ -6,18 +6,12 @@ namespace RouterDV
     public class RouterTabItem
     {
         public int Distance { set; get; } //两节点距离
-        public string NextHop { set; get; } //这里成品情况应该是路由器信息，即"router 3"这种
+        public int NextHop { set; get; } //这里是路由器序号，从0开始
 
-        public RouterTabItem(int distance, string nextHop) //最普通的初始化方式
+        public RouterTabItem(int distance, int nextHopNum)
         {
             Distance = distance;
-            NextHop = nextHop;
-        }
-
-        public RouterTabItem(int distance, int nextHopNum) //传进来3的话，就设置为"router 3"
-        {
-            Distance = distance;
-            NextHop = $"router {nextHopNum}";
+            NextHop = nextHopNum;
         }
         public override bool Equals(object obj) //自动生成
         {
@@ -42,11 +36,11 @@ namespace RouterDV
             throw new NotImplementedException();
         }
 
-        public override int GetHashCode() //自动生成
+        public override int GetHashCode()
         {
             var hashCode = -462717367;
             hashCode = hashCode * -1521134295 + Distance.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(NextHop);
+            hashCode = hashCode * -1521134295 + NextHop.GetHashCode();
             return hashCode;
         }
     }
