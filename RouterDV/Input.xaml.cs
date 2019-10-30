@@ -22,7 +22,21 @@ namespace RouterDV
         public Input()
         {
             InitializeComponent();
+            DataContext = MainWindow.data;
+            
         }
 
+        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                MainWindow.data.ReadConfig();
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.Message);
+            }
+            
+        }
     }
 }
