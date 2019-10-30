@@ -34,9 +34,14 @@ namespace RouterDV
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.Message);
+                var press = MessageBox.Show($"{ee.Message}{System.Environment.NewLine}请修改输入参数后重新点击提交按钮"
+                    ,"读取参数错误",MessageBoxButton.OK,MessageBoxImage.Error);
+                if (press == MessageBoxResult.OK) return;
             }
-            
+
+            MessageBox.Show("数据读取完成", "数据读取", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            Close();
+
         }
     }
 }

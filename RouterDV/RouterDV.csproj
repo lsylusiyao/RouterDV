@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataStore.cs" />
     <Compile Include="Input.xaml.cs">
       <DependentUpon>Input.xaml</DependentUpon>
     </Compile>
