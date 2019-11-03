@@ -62,6 +62,7 @@
     <Compile Include="Input.xaml.cs">
       <DependentUpon>Input.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MultiRouters.cs" />
     <Compile Include="Router.cs" />
     <Compile Include="RouterTabItem.cs" />
     <Page Include="Input.xaml">

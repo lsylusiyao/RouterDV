@@ -10,7 +10,16 @@ namespace RouterDV
 
         public string OriginRoute { set; get; } = string.Empty; //从文本框读进来的原始数据
 
-        public List<int> RoutersNum { set; get; } = new List<int>(); // 所有路由自身端口号
+        public List<int> RoutersNO2Num { set; get; } = new List<int>(); // 所有路由自身端口号，即序号查找编号
+
+        public void ReReadConfig() //在输入变化的时候，重新读取
+        {
+            // RoutersConnection是new int的，所以不用管
+            RoutersName.Clear();
+            OriginRoute = string.Empty;
+            RoutersNO2Num.Clear();
+            ReadConfig();
+        }
 
         public void ReadConfig()
         //将节点关系数组读取并变化为正方形距离关系数组，默认两节点的距离是5，设置为可调整的，然后不在输入中的节点对，直接给16
@@ -20,9 +29,9 @@ namespace RouterDV
             ///通过循环方式，找到port对应的数组序号
             int FindRouter(int port)
             {
-                for (int i = 0; i < RoutersNum.Count; i++)
+                for (int i = 0; i < RoutersNO2Num.Count; i++)
                 {
-                    if (RoutersNum[i] == port) return i;
+                    if (RoutersNO2Num[i] == port) return i;
                 }
                 return -1;
             }
@@ -49,7 +58,7 @@ namespace RouterDV
                 string[] s2 = s1.Split(',');
                 allRoutes.Add(new List<string>(s2)); // 按照逗号分割
                 RoutersName.Add(s2[0]); //拿到所有名字
-                RoutersNum.Add(Convert.ToInt32(s2[1])); //拿到所有自身端口
+                RoutersNO2Num.Add(Convert.ToInt32(s2[1])); //拿到所有自身端口
                 routerNumCount++;
             }
 
