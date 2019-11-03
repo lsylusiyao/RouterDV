@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace RouterDV
 {
     public class DataStore
     {
         public int[,] RoutersConnection { set; get; } //一定是一个方阵
-        public List<string> RoutersName { set; get; } = new List<string>(); //所有路由名称的合集
+
+        public ObservableCollection<string> RoutersName { set; get; } = new ObservableCollection<string>(); //所有路由名称的合集
+      
         public string OriginRoute { set; get; } = string.Empty; //从文本框读进来的原始数据
 
         public List<int> RoutersNO2Num { set; get; } = new List<int>(); // 所有路由自身端口号，即序号查找编号
+
+        public ObservableCollection<string> NeighborRouters { set; get; } = new ObservableCollection<string>();//相邻路由表
+
+        public int RoutersNumCount { set; get; } = 0; //总共输了多少个
 
         public void ReadConfig()
         //将节点关系数组读取并变化为正方形距离关系数组，默认两节点的距离是5，设置为可调整的，然后不在输入中的节点对，直接给16
@@ -29,7 +36,6 @@ namespace RouterDV
 
             // RoutersConnection是new int的，所以不用管
             RoutersName.Clear();
-            OriginRoute = string.Empty;
             RoutersNO2Num.Clear();
 
             #region 检查输入是否合法，只能输入数字字母空格逗号回车
@@ -44,7 +50,7 @@ namespace RouterDV
             var ChangedRoute = OriginRoute.Replace("\r", ""); //防止有\r，先删了
             string[] lineofRoutes = ChangedRoute.Split('\n'); // 按回车分割
             List<List<string>> allRoutes = new List<List<string>>(); // 所有的路由信息
-            int routerNumCount = 0; //总共输了多少个
+            
 
 
             foreach (var el in lineofRoutes) // 把所有路由信息切割生成
@@ -55,14 +61,14 @@ namespace RouterDV
                 allRoutes.Add(new List<string>(s2)); // 按照逗号分割
                 RoutersName.Add(s2[0]); //拿到所有名字
                 RoutersNO2Num.Add(Convert.ToInt32(s2[1])); //拿到所有自身端口
-                routerNumCount++;
+                RoutersNumCount++;
             }
 
             // 直接对矩阵初始化时，填充0和16
-            RoutersConnection = new int[routerNumCount, routerNumCount];
-            for (int i = 0; i < routerNumCount; i++)
+            RoutersConnection = new int[RoutersNumCount, RoutersNumCount];
+            for (int i = 0; i < RoutersNumCount; i++)
             {
-                for (int j = 0; j < routerNumCount; j++)
+                for (int j = 0; j < RoutersNumCount; j++)
                 {
                     if (j == i) RoutersConnection[i, j] = 0;
                     else RoutersConnection[i, j] = 16;

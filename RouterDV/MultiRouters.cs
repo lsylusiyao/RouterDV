@@ -58,7 +58,7 @@ namespace RouterDV
         /// </summary>
         void CreateIsNeighbor()
         {
-            int length = MainWindow.data.RoutersConnection.Rank;
+            int length = MainWindow.data.RoutersNumCount;
             isNeighbor = new int[length, length];
             for (int i = 0; i < length; i++)
             {
