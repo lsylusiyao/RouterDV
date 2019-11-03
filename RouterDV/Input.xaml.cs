@@ -23,7 +23,7 @@ namespace RouterDV
         {
             InitializeComponent();
             DataContext = MainWindow.data;
-            
+            inputTextBox.Text = MainWindow.data.OriginRoute;
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)

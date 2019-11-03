@@ -7,23 +7,14 @@ namespace RouterDV
     {
         public int[,] RoutersConnection { set; get; } //一定是一个方阵
         public List<string> RoutersName { set; get; } = new List<string>(); //所有路由名称的合集
-
         public string OriginRoute { set; get; } = string.Empty; //从文本框读进来的原始数据
 
         public List<int> RoutersNO2Num { set; get; } = new List<int>(); // 所有路由自身端口号，即序号查找编号
 
-        public void ReReadConfig() //在输入变化的时候，重新读取
-        {
-            // RoutersConnection是new int的，所以不用管
-            RoutersName.Clear();
-            OriginRoute = string.Empty;
-            RoutersNO2Num.Clear();
-            ReadConfig();
-        }
-
         public void ReadConfig()
         //将节点关系数组读取并变化为正方形距离关系数组，默认两节点的距离是5，设置为可调整的，然后不在输入中的节点对，直接给16
         {
+            
             int distance = 5; //写在这里方便改
 
             ///通过循环方式，找到port对应的数组序号
@@ -36,6 +27,11 @@ namespace RouterDV
                 return -1;
             }
 
+            // RoutersConnection是new int的，所以不用管
+            RoutersName.Clear();
+            OriginRoute = string.Empty;
+            RoutersNO2Num.Clear();
+
             #region 检查输入是否合法，只能输入数字字母空格逗号回车
 
             if (OriginRoute == string.Empty) throw new Exception("未填写内容");
@@ -45,8 +41,8 @@ namespace RouterDV
 
             #endregion
 
-            OriginRoute = OriginRoute.Replace("\r", ""); //防止有\r，先删了
-            string[] lineofRoutes = OriginRoute.Split('\n'); // 按回车分割
+            var ChangedRoute = OriginRoute.Replace("\r", ""); //防止有\r，先删了
+            string[] lineofRoutes = ChangedRoute.Split('\n'); // 按回车分割
             List<List<string>> allRoutes = new List<List<string>>(); // 所有的路由信息
             int routerNumCount = 0; //总共输了多少个
 
