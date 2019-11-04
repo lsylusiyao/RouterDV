@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace RouterDV
 {
@@ -113,6 +114,7 @@ namespace RouterDV
         }
         
         public ObservableCollection<string[]> RouterTableObs = new ObservableCollection<string[]>(); //路由表的集合，内部数组大小应为3
+        private List<int> routerLineNum = new List<int>(); // 每个路由器段的开始行号
         
         /// <summary>
         /// 路由表的生成函数，自动
@@ -124,11 +126,13 @@ namespace RouterDV
             routers.Update();
             RouterTableObs.Clear();
             int tempNameNum = 0;
+            int tempLine = 0; // 行号记录
 
             foreach (var router in routers.Routers) //显示所有的路由表
             {
                 int temp = 0;
                 RouterTableObs.Add(new string[3] { data.RoutersName[tempNameNum++].ToUpper(), "", "" });
+                routerLineNum.Add(tempLine++); // 索引行号，即第一个是0，如果用++i的话应该是不对的
                 var routerTableItems = router.RouterTableItems;
                 foreach(var routerItem in routerTableItems)
                 {
@@ -143,9 +147,11 @@ namespace RouterDV
                         tempStr = data.RoutersName[routerItem.NextHop];
                     s[2] = tempStr;
                     RouterTableObs.Add(s);
+                    tempLine++;
                 }
                 // 加一行空白
                 RouterTableObs.Add(System.Array.Empty<string>()) ;
+                tempLine++;
             }
         }
         
@@ -194,6 +200,9 @@ namespace RouterDV
             MessageBox.Show("停用路由设置完成", "设置", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
+
+        public ObservableCollection<string[]> SendDataSeqObs = new ObservableCollection<string[]>(); // 发送数据包的显示数组
+
         /// <summary>
         /// 生成发包顺序表
         /// </summary>
@@ -201,11 +210,25 @@ namespace RouterDV
         /// <param name="e"></param>
         private void StartSendingButton_Click(object sender, RoutedEventArgs e)
         {
-            if(sourceRouterCom.SelectedItem == null || destRouterCom.SelectedItem == null)
+            if (sourceRouterCom.SelectedItem == null || destRouterCom.SelectedItem == null)
             {
                 MessageBox.Show("请选择源路由和目标路由，并重试", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            SendDataSeqObs.Clear();
+
+            int FindRouter(string s) // 通过名称寻找路由的序号，在这里应该不会返回-1的
+            {
+                for (int i = 0; i < data.RoutersName.Count; i++)
+                {
+                    if (s == data.RoutersName[i]) return i;
+                }
+                return -1;
+            }
+            // 初始的source对应的LineNum
+            int line = routerLineNum[sourceRouterCom.SelectedIndex];
+
+
 
         }
     }

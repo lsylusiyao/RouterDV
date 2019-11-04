@@ -44,8 +44,8 @@
             <DataGrid x:Name="sendDataSeqGrid" HorizontalAlignment="Left" Height="407" Margin="0,55,0,0" VerticalAlignment="Top" Width="323" FontSize="15" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="当前路由" Width="*" Binding="{Binding [0]}"/>
-                    <DataGridTextColumn Header="下一跳" Width="*" Binding="{Binding [1]}"/>
-                    <DataGridTextColumn Header="距离" Width="*" Binding="{Binding [2]}"/>
+                    <DataGridTextColumn Header="距离" Width="*" Binding="{Binding [1]}"/>
+                    <DataGridTextColumn Header="下一跳" Width="*" Binding="{Binding [2]}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Label Content="发包顺序" HorizontalAlignment="Left" Margin="97,0,0,0" VerticalAlignment="Top" FontSize="30" FontWeight="Bold"/>
