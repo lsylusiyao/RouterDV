@@ -22,6 +22,7 @@ namespace RouterDV
     {
         Input input; //Input子窗口
         public static DataStore data = new DataStore();
+        private MultiRouters routers = new MultiRouters();
 
         public MainWindow()
         {
@@ -29,6 +30,9 @@ namespace RouterDV
             DataContext = data;
             neighborRouterListBox.DataContext = this;
             routerConnectGrid.DataContext = this;
+            routerConnectGrid.ItemsSource = RouterRelationObs;
+            routerTableGrid.DataContext = this;
+            //routerTableGrid.ItemsSource = RouterTableObs;
         }
 
         
@@ -39,6 +43,15 @@ namespace RouterDV
             neighborRouterCom.SelectedIndex = -1;
             priorityRouterCom.SelectedIndex = -1;
             stopRouterCom.SelectedIndex = -1;
+            RenewEverything();
+        }
+
+        /// <summary>
+        /// 把所有需要刷新的东西都写在这里，省得忘
+        /// </summary>
+        private void RenewEverything()
+        {
+            CreateRouterRelationShip();
             CreateRouterTable();
         }
 
@@ -49,7 +62,7 @@ namespace RouterDV
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void neighborRouterCom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void NeighborRouterCom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int select = neighborRouterCom.SelectedIndex;
             NeighborRouterGridItem.Clear();
@@ -62,24 +75,22 @@ namespace RouterDV
             }
         }
 
-        public ObservableCollection<int[]> RouterTableObs = new ObservableCollection<int[]>(); //路由表的集合
+        public ObservableCollection<int[]> RouterRelationObs = new ObservableCollection<int[]>(); //路由关系图的集合
         /// <summary>
         /// 自动添加行头
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void routerConnectGrid_LoadingRow(object sender, DataGridRowEventArgs e)
-        {
-            e.Row.Header = data.RoutersName[e.Row.GetIndex()];
-        }
+        private void RouterConnectGrid_LoadingRow(object sender, DataGridRowEventArgs e) => e.Row.Header = data.RoutersName[e.Row.GetIndex()];
 
         /// <summary>
-        /// 将二维数组翻译为需要的特殊形式数组，每一行都是一个一维数组
+        /// 将二维数组翻译为需要的特殊形式数组并展示出来，每一行都是一个一维数组
         /// </summary>
-        private void CreateRouterTable()
+        private void CreateRouterRelationShip()
         {
-            routerConnectGrid.ItemsSource = RouterTableObs;
             routerConnectGrid.Columns.Clear();
+            RouterRelationObs.Clear();
+            routerConnectGrid.Items.Refresh();
             for (int i = 0; i < data.RoutersNumCount; i++)
             {
                 DataGridTextColumn dc = new DataGridTextColumn
@@ -97,15 +108,43 @@ namespace RouterDV
                 {
                     temp[j] = data.RoutersConnection[i, j];
                 }
-                RouterTableObs.Add(temp);
+                RouterRelationObs.Add(temp);
             }
         }
-
-        private int[,] oldRoutersConnection; //原先路由表的备份
+        
+        public ObservableCollection<object[]> RouterTableObs = new ObservableCollection<object[]>(); //路由表的集合，内部数组大小应为3
+        private void CreateRouterTable()
+        {
+            // obj: Dest-Router, Distance, Next-Hop
+            routers.Init();
+            RouterTableObs.Clear();
+            foreach(var router in routers.Routers) //显示所有的路由表
+            {
+                int temp = 0;
+                var routerTableItems = router.RouterTableItems;
+                foreach(var routerItem in routerTableItems)
+                {
+                    object[] obj = new object[3];
+                    obj[0] = data.RoutersName[temp++];
+                    obj[1] = routerItem.Distance;
+                    var nextHopId = routerItem.NextHop;
+                    string tempStr;
+                    if (nextHopId == router.ID || routerItem.Distance == 16)
+                        tempStr = "-";
+                    else
+                        tempStr = routerItem.NextHop.ToString();
+                    obj[2] = tempStr;
+                    RouterTableObs.Add(obj);
+                }
+                // 加一行空白
+                RouterTableObs.Add(new object[3]);
+            }
+        }
+        
         private void PriorityApplyButton_Click(object sender, RoutedEventArgs e)
         {
-            oldRoutersConnection = (int[,])data.RoutersConnection.Clone();
-            if(priorityRouterCom.SelectedIndex == -1)
+            data.RoutersConnection = (int[,])data.OldRoutersConnection.Clone();
+            if (priorityRouterCom.SelectedIndex == -1)
             {
                 MessageBox.Show("什么都没有选择，将不进行任何更改。");
                 return;
@@ -120,19 +159,20 @@ namespace RouterDV
                 if (data.RoutersConnection[i, select] == 16 || data.RoutersConnection[i, select] == 0) { }
                 else data.RoutersConnection[i, select] = 1;
             }
-            CreateRouterTable();
+            RenewEverything();
+            MessageBox.Show("优先路由设置完成", "设置", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
         private void StopApplyButton_Click(object sender, RoutedEventArgs e)
         {
-            oldRoutersConnection = (int[,])data.RoutersConnection.Clone();
+            data.RoutersConnection = (int[,])data.OldRoutersConnection.Clone();
             if (stopRouterCom.SelectedIndex == -1)
             {
                 MessageBox.Show("什么都没有选择，将不进行任何更改。");
                 return;
             }
             //非0和16的变成16，相当于断开
-            int select = priorityRouterCom.SelectedIndex;
+            int select = stopRouterCom.SelectedIndex;
             for (int i = 0; i < data.RoutersNumCount; i++)
             {
                 if (data.RoutersConnection[select, i] == 0) { }
@@ -141,12 +181,13 @@ namespace RouterDV
                 if (data.RoutersConnection[i, select] == 0) { }
                 else data.RoutersConnection[i, select] = 16;
             }
-            CreateRouterTable();
+            RenewEverything();
+            MessageBox.Show("停用路由设置完成", "设置", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
         private void StartSendingButton_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
     }
 }

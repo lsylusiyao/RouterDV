@@ -21,11 +21,12 @@ namespace RouterDV
 
         }
         /// <summary>
-        /// 初始化Multi，但是要确保之前执行过ReadConfig()
+        /// 在路由表数组更改之后，初始化Multi，但是要确保之前执行过ReadConfig()
         /// </summary>
         public void Init()
         {
             int[,] configInfoArray = MainWindow.data.RoutersConnection;
+            Routers.Clear();
             for (int i = 0; i < configInfoArray.Rank; i++)
             {
                 Router router = new Router();
@@ -38,6 +39,8 @@ namespace RouterDV
                 }
                 Routers.Add(router);
             }
+            CreateIsNeighbor();
+            CreateDict();
         }
         
         /// <summary>
@@ -72,6 +75,9 @@ namespace RouterDV
             }
         }
 
+        /// <summary>
+        /// 因为显示的问题而更新路由表显示
+        /// </summary>
         public void Update()
         {
             Router router; //准备更新的路由

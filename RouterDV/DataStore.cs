@@ -8,6 +8,8 @@ namespace RouterDV
     {
         public int[,] RoutersConnection { set; get; } //一定是一个方阵
 
+        public int[,] OldRoutersConnection { set; get; } //对上一个二维数组的备份，之后折腾的时候可以直接拷贝这个来还原
+
         public ObservableCollection<string> RoutersName { set; get; } = new ObservableCollection<string>(); //所有路由名称的合集
       
         public string OriginRoute { set; get; } = string.Empty; //从文本框读进来的原始数据
@@ -84,7 +86,7 @@ namespace RouterDV
                 }
             }
 
-
+            OldRoutersConnection = (int[,])RoutersConnection.Clone();
 
 
         }
