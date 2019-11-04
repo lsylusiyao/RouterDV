@@ -34,6 +34,8 @@ namespace RouterDV
             routerConnectGrid.ItemsSource = RouterRelationObs;
             routerTableGrid.DataContext = this;
             routerTableGrid.ItemsSource = RouterTableObs;
+            sendDataSeqGrid.DataContext = this;
+            sendDataSeqGrid.ItemsSource = SendDataSeqObs;
         }
 
         
@@ -227,22 +229,22 @@ namespace RouterDV
                 return -1;
             }
 
-            while(RouterTableObs[line + destRouterCom.SelectedIndex][2] != "-") // 确保每一轮循环结束的时候都回到每个路由列表的第一行
+            while(RouterTableObs[line + destRouterCom.SelectedIndex + 1][2] != "-") // 确保每一轮循环结束的时候都回到每个路由列表的第一行
             {
                 // string : 当前路由、终点距离、下一跳
                 string[] sadd = new string[3];
                 sadd[0] = data.RoutersName[FindRoute(line)];
                 // 初始去找自己组内目标
-                line += destRouterCom.SelectedIndex;
+                line += destRouterCom.SelectedIndex + 1;
                 // 照抄两个数据
                 sadd[1] = RouterTableObs[line][1];
                 sadd[2] = RouterTableObs[line][2];
                 // 寻找下一跳目标
-                line = routerLineNum[routers.RoutersStr2NO[RouterTableObs[line][3]]]; // 字典找到字符串对应的序号，然后传给Line数组
+                line = routerLineNum[routers.RoutersStr2NO[RouterTableObs[line][2]]]; // 字典找到字符串对应的序号，然后传给Line数组
                 SendDataSeqObs.Add(sadd);
             }
             // 最后把最终一条加进去
-            SendDataSeqObs.Add(RouterTableObs[line + destRouterCom.SelectedIndex]);
+            SendDataSeqObs.Add(RouterTableObs[line + destRouterCom.SelectedIndex + 1]);
 
         }
     }
