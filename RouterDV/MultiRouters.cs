@@ -4,7 +4,9 @@ namespace RouterDV
 {
     public class MultiRouters
     {
-        public Dictionary<int, int> RoutersNum2NO { set; get; } = new Dictionary<int, int>(); //所有路由序号，即从编号查找序号
+        public Dictionary<int, int> RoutersNum2NO { get; } = new Dictionary<int, int>(); //所有路由序号，即从编号查找序号
+
+        public Dictionary<string, int> RoutersStr2NO { get; } = new Dictionary<string, int>(); // 由路由名字查找序号
 
         public List<Router> Routers { get; } = new List<Router>();
         //对应另一个是DataStore中的RoutersNO2Num
@@ -13,10 +15,15 @@ namespace RouterDV
         public void CreateDict()
         {
             RoutersNum2NO.Clear();
-            // 根据List创建字典
-            for (int i=0;i<MainWindow.data.RoutersNO2Num.Count;i++)
+            // 根据List创建字典s
+            for (int i = 0; i < MainWindow.data.RoutersNO2Num.Count; i++)
             {
                 RoutersNum2NO.Add(MainWindow.data.RoutersNO2Num[i], i);
+            }
+            RoutersStr2NO.Clear();
+            for (int i = 0; i < MainWindow.data.RoutersName.Count; i++)
+            {
+                RoutersStr2NO.Add(MainWindow.data.RoutersName[i], i);
             }
 
         }
