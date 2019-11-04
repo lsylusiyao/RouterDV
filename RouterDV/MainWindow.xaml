@@ -23,9 +23,9 @@
         <Grid Margin="770,59,-0.333,0" Height="483" VerticalAlignment="Top">
             <DataGrid x:Name="routerTableGrid" HorizontalAlignment="Left" Height="408" Margin="0,54,0,0" VerticalAlignment="Top" Width="484" FontSize="15" AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="目标路由" Width="*"/>
-                    <DataGridTextColumn Header="距离" Width="*"/>
-                    <DataGridTextColumn Header="下一跳" Width="*"/>
+                    <DataGridTextColumn Header="目标路由" Width="*" Binding="{Binding S1}"/>
+                    <DataGridTextColumn Header="距离" Width="*" Binding="{Binding S2}"/>
+                    <DataGridTextColumn Header="下一跳" Width="*" Binding="{Binding S3}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Label Content="路由表" HorizontalAlignment="Left" Margin="188,1,0,0" VerticalAlignment="Top" FontSize="30" FontWeight="Bold"/>

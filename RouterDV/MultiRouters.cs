@@ -25,15 +25,14 @@ namespace RouterDV
         /// </summary>
         public void Init()
         {
-            int[,] configInfoArray = MainWindow.data.RoutersConnection;
             Routers.Clear();
-            for (int i = 0; i < configInfoArray.Rank; i++)
+            for (int i = 0; i < MainWindow.data.RoutersNumCount; i++)
             {
                 Router router = new Router();
                 router.ID = i;
-                for(int j=0;j<configInfoArray.Rank;j++) //反正是正方形数组，就这样吧
+                for(int j=0;j< MainWindow.data.RoutersNumCount; j++) //反正是正方形数组，就这样吧
                 {
-                    int distance = configInfoArray[i, j];
+                    int distance = MainWindow.data.RoutersConnection[i, j];
                     int nextHop = j;
                     router.RouterTableItems.Add(new RouterTabItem(distance, nextHop));
                 }

@@ -32,7 +32,7 @@ namespace RouterDV
             routerConnectGrid.DataContext = this;
             routerConnectGrid.ItemsSource = RouterRelationObs;
             routerTableGrid.DataContext = this;
-            //routerTableGrid.ItemsSource = RouterTableObs;
+            routerTableGrid.ItemsSource = RouterTableObs;
         }
 
         
@@ -111,33 +111,40 @@ namespace RouterDV
                 RouterRelationObs.Add(temp);
             }
         }
-        
-        public ObservableCollection<object[]> RouterTableObs = new ObservableCollection<object[]>(); //路由表的集合，内部数组大小应为3
+        public struct RouterTableStruct
+        {
+            public string S1 { set; get; }
+            public string S2 { set; get; }
+            public string S3 { set; get; }
+
+        }
+        public ObservableCollection<RouterTableStruct> RouterTableObs = new ObservableCollection<RouterTableStruct>(); //路由表的集合，内部数组大小应为3
         private void CreateRouterTable()
         {
-            // obj: Dest-Router, Distance, Next-Hop
+            // obj: Dest-Router, Distance, Next-HopRouterTableStruct
             routers.Init();
             RouterTableObs.Clear();
+            
             foreach(var router in routers.Routers) //显示所有的路由表
             {
                 int temp = 0;
                 var routerTableItems = router.RouterTableItems;
                 foreach(var routerItem in routerTableItems)
                 {
-                    object[] obj = new object[3];
-                    obj[0] = data.RoutersName[temp++];
-                    obj[1] = routerItem.Distance;
+                    RouterTableStruct r = new RouterTableStruct();
+                    r.S1 = data.RoutersName[temp++];
+                    r.S2 = routerItem.Distance.ToString();
                     var nextHopId = routerItem.NextHop;
                     string tempStr;
                     if (nextHopId == router.ID || routerItem.Distance == 16)
                         tempStr = "-";
                     else
-                        tempStr = routerItem.NextHop.ToString();
-                    obj[2] = tempStr;
-                    RouterTableObs.Add(obj);
+                        tempStr = data.RoutersName[routerItem.NextHop];
+                    r.S3 = tempStr;
+                    RouterTableObs.Add(r);
                 }
                 // 加一行空白
-                RouterTableObs.Add(new object[3]);
+                RouterTableObs.Add(new RouterTableStruct { S1 = string.Empty, S2 = string.Empty, S3 = string.Empty }) ;
             }
         }
         
