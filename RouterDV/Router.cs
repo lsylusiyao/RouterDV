@@ -24,16 +24,17 @@ namespace RouterDV
                         routerTab.Distance = distance + neighborRouterTab.Distance;
                         routerTab.NextHop = neighborRouter.ID;
                     }
-                    else
-                    { // 按照公式进行路由更新
-                        int tempDistance = distance + neighborRouterTab.Distance;
-                        if(routerTab.Distance > tempDistance)
-                        {
-                            routerTab.Distance = tempDistance;
-                            routerTab.NextHop = neighborRouter.ID;
-                        }
+                }
+                else
+                { // 按照公式进行路由更新
+                    int tempDistance = distance + neighborRouterTab.Distance;
+                    if (routerTab.Distance > tempDistance)
+                    {
+                        routerTab.Distance = tempDistance;
+                        routerTab.NextHop = neighborRouter.ID;
                     }
                 }
+
             }
         }
 

@@ -111,42 +111,43 @@ namespace RouterDV
                 RouterRelationObs.Add(temp);
             }
         }
-        public struct RouterTableStruct
-        {
-            public string S1 { set; get; }
-            public string S2 { set; get; }
-            public string S3 { set; get; }
-
-        }
-        public ObservableCollection<RouterTableStruct> RouterTableObs = new ObservableCollection<RouterTableStruct>(); //路由表的集合，内部数组大小应为3
+        
+        public ObservableCollection<string[]> RouterTableObs = new ObservableCollection<string[]>(); //路由表的集合，内部数组大小应为3
+        
+        /// <summary>
+        /// 路由表的生成函数，自动
+        /// </summary>
         private void CreateRouterTable()
         {
             // obj: Dest-Router, Distance, Next-HopRouterTableStruct
             routers.Init();
             RouterTableObs.Clear();
-            
-            foreach(var router in routers.Routers) //显示所有的路由表
+            int tempNameNum = 0;
+
+            foreach (var router in routers.Routers) //显示所有的路由表
             {
                 int temp = 0;
+                RouterTableObs.Add(new string[3] { data.RoutersName[tempNameNum++].ToUpper(), "", "" });
                 var routerTableItems = router.RouterTableItems;
                 foreach(var routerItem in routerTableItems)
                 {
-                    RouterTableStruct r = new RouterTableStruct();
-                    r.S1 = data.RoutersName[temp++];
-                    r.S2 = routerItem.Distance.ToString();
+                    string[] s = new string[3];
+                    s[0] = data.RoutersName[temp++];
+                    s[1] = routerItem.Distance.ToString();
                     var nextHopId = routerItem.NextHop;
                     string tempStr;
                     if (nextHopId == router.ID || routerItem.Distance == 16)
                         tempStr = "-";
                     else
                         tempStr = data.RoutersName[routerItem.NextHop];
-                    r.S3 = tempStr;
-                    RouterTableObs.Add(r);
+                    s[2] = tempStr;
+                    RouterTableObs.Add(s);
                 }
                 // 加一行空白
-                RouterTableObs.Add(new RouterTableStruct { S1 = string.Empty, S2 = string.Empty, S3 = string.Empty }) ;
+                RouterTableObs.Add(System.Array.Empty<string>()) ;
             }
         }
+        
         
         private void PriorityApplyButton_Click(object sender, RoutedEventArgs e)
         {
@@ -192,9 +193,19 @@ namespace RouterDV
             MessageBox.Show("停用路由设置完成", "设置", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
+        /// <summary>
+        /// 生成发包顺序表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StartSendingButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            if(sourceRouterCom.SelectedItem == null || destRouterCom.SelectedItem == null)
+            {
+                MessageBox.Show("请选择源路由和目标路由，并重试", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
         }
     }
 }

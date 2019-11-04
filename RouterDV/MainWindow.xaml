@@ -15,17 +15,17 @@
             <ListBox x:Name="neighborRouterListBox" HorizontalAlignment="Left" Height="163" Margin="10,49,0,0" VerticalAlignment="Top" Width="107" ItemsSource="{Binding NeighborRouterGridItem}" FontSize="14"/>
             <Label Content="的相邻路由" HorizontalAlignment="Left" Margin="115,10,0,0" VerticalAlignment="Top" FontSize="18"/>
             <Label Content="路由选择" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Margin="175,47,0,0"/>
-            <ComboBox x:Name="sourceRouter" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="25" FontSize="16" ItemsSource="{Binding RoutersName, Mode=OneWay}" Margin="263,51,0,0" />
+            <ComboBox x:Name="sourceRouterCom" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="25" FontSize="16" ItemsSource="{Binding RoutersName, Mode=OneWay}" Margin="263,51,0,0" />
             <Label Content="发包向" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Margin="184,92,0,0"/>
-            <ComboBox x:Name="destRouter" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="25" FontSize="16" ItemsSource="{Binding RoutersName, Mode=OneWay}" Margin="263,97,0,0" />
+            <ComboBox x:Name="destRouterCom" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="25" FontSize="16" ItemsSource="{Binding RoutersName, Mode=OneWay}" Margin="263,97,0,0" />
             <Button x:Name="startSendingButton" Content="开始发包" HorizontalAlignment="Left" Margin="297,141,0,0" VerticalAlignment="Top" Width="101" Height="32" FontSize="16" Click="StartSendingButton_Click"/>
         </Grid>
         <Grid Margin="770,59,-0.333,0" Height="483" VerticalAlignment="Top">
             <DataGrid x:Name="routerTableGrid" HorizontalAlignment="Left" Height="408" Margin="0,54,0,0" VerticalAlignment="Top" Width="484" FontSize="15" AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="目标路由" Width="*" Binding="{Binding S1}"/>
-                    <DataGridTextColumn Header="距离" Width="*" Binding="{Binding S2}"/>
-                    <DataGridTextColumn Header="下一跳" Width="*" Binding="{Binding S3}"/>
+                    <DataGridTextColumn Header="目标路由" Width="*" Binding="{Binding [0]}"/>
+                    <DataGridTextColumn Header="距离" Width="*" Binding="{Binding [1]}"/>
+                    <DataGridTextColumn Header="下一跳" Width="*" Binding="{Binding [2]}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Label Content="路由表" HorizontalAlignment="Left" Margin="188,1,0,0" VerticalAlignment="Top" FontSize="30" FontWeight="Bold"/>
@@ -41,7 +41,7 @@
             <ComboBox x:Name="stopRouterCom" HorizontalAlignment="Left" Margin="87,10,0,0" VerticalAlignment="Top" Width="143" Height="29" FontSize="16" ItemsSource="{Binding RoutersName, Mode=OneWay}"/>
         </Grid>
         <Grid Margin="429,59,501.667,0" Height="483" VerticalAlignment="Top">
-            <DataGrid HorizontalAlignment="Left" Height="407" Margin="0,55,0,0" VerticalAlignment="Top" Width="320" FontSize="15">
+            <DataGrid x:Name="sendDataSeqGrid" HorizontalAlignment="Left" Height="407" Margin="0,55,0,0" VerticalAlignment="Top" Width="320" FontSize="15">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="路由器名称" Width="*"/>
                     <DataGridTextColumn Header="下级名称" Width="*"/>
