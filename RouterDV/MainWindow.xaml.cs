@@ -121,6 +121,7 @@ namespace RouterDV
         {
             // obj: Dest-Router, Distance, Next-HopRouterTableStruct
             routers.Init();
+            routers.Update();
             RouterTableObs.Clear();
             int tempNameNum = 0;
 
